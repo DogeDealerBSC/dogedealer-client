@@ -383,11 +383,18 @@
   grid-gap: 1em;
   position: absolute;
   width: 250px;
-  top: 90%;
+  top: 100%;
   left: 0;
   background: #ffe6c6;
   padding: 10px;
   border-radius: 10px;
+  height: 250px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    background: #ffc068;
+  }
 
   > div {
     background: $lightOrange;

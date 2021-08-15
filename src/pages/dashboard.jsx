@@ -94,10 +94,12 @@ const Dashboard = () => {
   const [selectedToken, setSelectedToken] = useState(
     "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
   );
-  const [payoutToken, setPayoutToken] = useState();
+  const [payoutToken, setPayoutToken] = useState("BNB");
   const [decimals, setDecimals] = useState();
   const [nativeDecimals, setNativeDecimals] = useState();
-  const [payoutTokenAddress, setPayoutTokenAddress] = useState();
+  const [payoutTokenAddress, setPayoutTokenAddress] = useState(
+    "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+  );
 
   const { active, library, account } = useWeb3React();
   //const account = "0xA00c4A62474D053FF0394cdFdb3eE71Cb631f705";
@@ -310,9 +312,9 @@ const Dashboard = () => {
   }
 
   const handleImage = (tokenAddress) => {
+    console.log(tokenAddress);
     const res = TokenList.filter((list) => list.address === tokenAddress);
-
-    return res.logo;
+    return res[0].logo;
   };
 
   const renderPrimaryDoge = (
