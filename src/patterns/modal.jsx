@@ -50,6 +50,7 @@ const Modal = ({
 
   const handleAcceptReferrer = async () => {
     setIsProcessing(true);
+    console.log(referrerAddress);
     //if referer = '0x0000000000000000000000000000000000000000' proceed else cant add referer
     try {
       await new new Web3(library).eth.Contract(abi, address).methods

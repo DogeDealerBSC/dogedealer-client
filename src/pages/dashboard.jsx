@@ -245,7 +245,7 @@ const Dashboard = () => {
       setIsLoading(false);
     }
   };
-  console.log(allTimeLeaderboard);
+
   const handleIsvalidAcceptReferrerr = async (val) => {
     console.log(val);
     const contract = new new Web3(library).eth.Contract(abi, address);
@@ -253,6 +253,8 @@ const Dashboard = () => {
     console.log(data);
     if (data === "0x0000000000000000000000000000000000000000") {
       setReferrerAddress(val);
+    } else {
+      setReferrerAddress();
     }
   };
 
