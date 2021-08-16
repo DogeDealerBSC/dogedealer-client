@@ -99,7 +99,7 @@ const Dashboard = () => {
   const [decimals, setDecimals] = useState();
   const [nativeDecimals, setNativeDecimals] = useState();
   const [payoutTokenAddress, setPayoutTokenAddress] = useState(
-    "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    "0x0000000000000000000000000000000000000000"
   );
 
   const { active, library, account } = useWeb3React();
@@ -212,7 +212,7 @@ const Dashboard = () => {
         setTotalReferrals(await totalReferals());
       } else {
         setPayoutToken("BNB");
-        setPayoutTokenAddress("0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c");
+        setPayoutTokenAddress("0x0000000000000000000000000000000000000000");
       }
       //await accountInfo();
       const { referrer } = queryString.parse(location.search);
@@ -327,7 +327,7 @@ const Dashboard = () => {
   const handleImage = (tokenAddress) => {
     console.log(tokenAddress);
     const res = TokenList.filter((list) => list.address === tokenAddress);
-    return res[0].logo;
+    return res[0]?.logo;
   };
 
   const renderPrimaryDoge = (
