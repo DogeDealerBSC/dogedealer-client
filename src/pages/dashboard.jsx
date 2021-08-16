@@ -83,7 +83,7 @@ const Dashboard = () => {
   const [dailyLeaderboard, setDailyLeaderboard] = useState([]);
   const [weeklyLeaderboard, setWeeklyLeaderboard] = useState([]);
   const [monthlyLeaderboard, setMonthlyLeaderboard] = useState([]);
-  const [TotalReferrals, setTotalReferrals] = useState();
+  const [TotalReferrals, setTotalReferrals] = useState(0);
 
   const [autoDividendEarnings, setAutoDividendEarnings] = useState(0);
   const [withdrawable, setWithdrawable] = useState(0);
@@ -112,7 +112,9 @@ const Dashboard = () => {
     decimal: 18,
   };
   const totalReferals = async () => {
-    return await contract.methods.getReferralCount(account).call();
+    console.log("called");
+    var bal = await contract.methods.getReferralCount(account).call();
+    console.warn("balance", bal);
   };
 
   const getUserToken = async () => {
@@ -197,7 +199,7 @@ const Dashboard = () => {
       setAutoDividendEarnings(data);
 
       const user = await getUserToken();
-      if (user != undefined) {
+      if (user !== undefined) {
         console.log(user);
         setPayoutToken(user.name);
         setPayoutTokenAddress(user.userToken);
@@ -264,7 +266,23 @@ const Dashboard = () => {
   };
 
   const handleReinvesting = async (value) => {
-    await contract.methods.setReinvest(value).send({ from: account });
+    setIsProcessing(true);
+    try {
+      await contract.methods.setReinvest(value).send({ from: account });
+      setIsProcessing(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+      setRewardTokenName();
+      setIsProcessing(false);
+      setIsError(true);
+      setTimeout(() => {
+        setIsError(false);
+      }, 3000);
+    }
   };
 
   //INITIAL PAGE LOAD
