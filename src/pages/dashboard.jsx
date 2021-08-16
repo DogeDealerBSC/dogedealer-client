@@ -325,7 +325,7 @@ const Dashboard = () => {
   const handleImage = (tokenAddress) => {
     console.log(tokenAddress);
     const res = TokenList.filter((list) => list.address === tokenAddress);
-    return res[0].logo;
+    return res[0]?.logo;
   };
 
   const renderPrimaryDoge = (
