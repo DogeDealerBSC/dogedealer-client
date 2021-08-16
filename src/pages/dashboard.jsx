@@ -99,7 +99,7 @@ const Dashboard = () => {
   const [decimals, setDecimals] = useState();
   const [nativeDecimals, setNativeDecimals] = useState();
   const [payoutTokenAddress, setPayoutTokenAddress] = useState(
-    "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    "0x0000000000000000000000000000000000000000"
   );
 
   const { active, library, account } = useWeb3React();
