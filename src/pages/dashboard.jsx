@@ -83,6 +83,7 @@ const Dashboard = () => {
   const [dailyLeaderboard, setDailyLeaderboard] = useState([]);
   const [weeklyLeaderboard, setWeeklyLeaderboard] = useState([]);
   const [monthlyLeaderboard, setMonthlyLeaderboard] = useState([]);
+  const [TotalReferrals, setTotalReferrals] = useState();
 
   const [autoDividendEarnings, setAutoDividendEarnings] = useState(0);
   const [withdrawable, setWithdrawable] = useState(0);
@@ -110,16 +111,8 @@ const Dashboard = () => {
     address: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
     decimal: 18,
   };
-  const buyAmount = async () => {
-    const pcsRouter = new web3.eth.Contract(pcsAbi, pcsAddress);
-
-    const path = [selectedToken, address];
-
-    const quote = await pcsRouter.methods
-      .getAmountsOut(web3.utils.toWei("1"), path)
-      .call();
-
-    return unatomic(quote[1], decimals);
+  const totalReferals = async () => {
+    return await contract.methods.getReferralCount(account).call();
   };
 
   const getUserToken = async () => {
@@ -156,7 +149,7 @@ const Dashboard = () => {
 
   const getReferalEarnings = async () => {
     return unatomic(
-      await contract.methods.getReferalEarnings(account).call(),
+      await contract.methods.getReferralEarnings(account).call(),
       9
     );
   };
@@ -214,12 +207,12 @@ const Dashboard = () => {
         setTotalDividend(await getTotalDividendDistributed());
         setWithdrawable(await getWithdrawable());
         setReinvestingInfo(await getReinvestingInfo());
+        setTotalReferrals(await totalReferals());
       } else {
         setPayoutToken("BNB");
         setPayoutTokenAddress("0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c");
       }
       //await accountInfo();
-      setBuy(await buyAmount());
       const { referrer } = queryString.parse(location.search);
       handleIsvalidAcceptReferrerr(referrer);
       //setAutoDividendEarnings(await accountInfo(userTokenAddress));
@@ -238,7 +231,7 @@ const Dashboard = () => {
 
       const {
         data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
-      } = await axios.get("http://52.15.237.41:5000/getAll");
+      } = await axios.get("http://localhost:5000/getAll");
       // console.log(allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards);
       setAllTimeLeaderboard(allTimeRewards);
       setDailyLeaderboard(dailyRewards);
@@ -254,7 +247,7 @@ const Dashboard = () => {
   const handleIsvalidAcceptReferrerr = async (val) => {
     console.log(val);
     const contract = new new Web3(library).eth.Contract(abi, address);
-    const data = await contract.methods.referers(account).call();
+    const data = await contract.methods.getReferrer().call();
     console.log(data);
     if (data === "0x0000000000000000000000000000000000000000") {
       setReferrerAddress(val);
@@ -787,7 +780,7 @@ const Dashboard = () => {
           <div className="block_right">
             <p className="text_accent_primary_14">Total referred</p>
             <div>
-              <p className="text_accent_primary_22">{referralData?.length}</p>
+              <p className="text_accent_primary_22">{TotalReferrals}</p>
               <p className="text_accent_primary_12">view my referals</p>
             </div>
           </div>
