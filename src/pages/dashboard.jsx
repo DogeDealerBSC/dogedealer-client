@@ -212,7 +212,7 @@ const Dashboard = () => {
         setTotalReferrals(await totalReferals());
       } else {
         setPayoutToken("BNB");
-        setPayoutTokenAddress("0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c");
+        setPayoutTokenAddress("0x0000000000000000000000000000000000000000");
       }
       //await accountInfo();
       const { referrer } = queryString.parse(location.search);
