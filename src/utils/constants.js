@@ -1528,31 +1528,31 @@ export const TokenList = [
     decimals: 18,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
   },
-    {
+  {
     name: "Dogecoin",
     address: "0xba2ae424d960c26247dd6c32edc70b295c744c43",
     decimals: 8,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/74.png",
   },
-      {
+  {
     name: "BUSD",
     address: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
     decimals: 18,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
   },
-        {
+  {
     name: "Ethereum",
     address: "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
     decimals: 18,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
   },
-          {
+  {
     name: "Ripple",
     address: "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe",
     decimals: 18,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/52.png",
   },
-            {
+  {
     name: "Cardano",
     address: "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47",
     decimals: 18,
@@ -1564,10 +1564,16 @@ export const TokenList = [
     decimals: 9,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/10407.png",
   },
-   {
+  {
     name: "MoonRise",
     address: "0x7Ee7F14427cC41D6dB17829eb57Dc74A26796b9D",
     decimals: 9,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/10681.png",
+  },
+  {
+    name: "Cake",
+    address: "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+    decimals: 18,
+    logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/7186.png",
   },
 ];

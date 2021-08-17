@@ -19,7 +19,7 @@ import PaymentModal from "../patterns/paymentModal";
 
 //IMPORTING MEDIA ASSETS
 
-import logo from "../assets/logos/logo.svg";
+import logo from "../assets/logos/logo.png";
 import dogecoin from "../assets/logos/dogecoin.svg";
 import binance from "../assets/logos/binance.svg";
 import user from "../assets/icons/user.svg";
@@ -287,43 +287,6 @@ const Dashboard = () => {
       }, 3000);
     }
   };
-
-  //INITIAL PAGE LOAD
-
-  if (initialLoad) {
-    return <Modal />;
-  }
-
-  //RENDER IF USER IS INACTIVE
-
-  if (!active) {
-    return (
-      <Modal
-        variant="connectwallet"
-        title="Select your wallet"
-        description="connect your crypto wallet to continue"
-        buttonText="CONNECT WALLET"
-      />
-    );
-  }
-
-  //RENDER IF USER HAS REFERRER
-
-  if (referrerAddress) {
-    return (
-      <Modal
-        variant="acceptReferrer"
-        title="Accept the referrer"
-        description="Accepting this referral and pay 5% LESS tax on your $DogeDealer purchase!"
-        buttonText="ACCEPT NOW"
-        referrerAddress={referrerAddress}
-        setReferrerAddress={setReferrerAddress}
-        setIsProcessing={setIsProcessing}
-        setIsSuccess={setIsSuccess}
-        setIsError={setIsError}
-      />
-    );
-  }
 
   const handleImage = (tokenAddress) => {
     console.log(tokenAddress);
@@ -773,6 +736,43 @@ const Dashboard = () => {
       )}
     </div>
   );
+
+  //INITIAL PAGE LOAD
+
+  if (initialLoad) {
+    return <Modal />;
+  }
+
+  //RENDER IF USER IS INACTIVE
+
+  if (!active) {
+    return (
+      <Modal
+        variant="connectwallet"
+        title="Select your wallet"
+        description="connect your crypto wallet to continue"
+        buttonText="CONNECT WALLET"
+      />
+    );
+  }
+
+  //RENDER IF USER HAS REFERRER
+
+  if (referrerAddress) {
+    return (
+      <Modal
+        variant="acceptReferrer"
+        title="Accept the referral"
+        description="Accepting this referral and pay 5% LESS tax on your $DogeDealer purchase!"
+        buttonText="ACCEPT NOW"
+        referrerAddress={referrerAddress}
+        setReferrerAddress={setReferrerAddress}
+        setIsProcessing={setIsProcessing}
+        setIsSuccess={setIsSuccess}
+        setIsError={setIsError}
+      />
+    );
+  }
 
   return (
     <>

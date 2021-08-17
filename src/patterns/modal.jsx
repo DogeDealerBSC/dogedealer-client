@@ -12,13 +12,11 @@ import "../styles/patterns/modal.scss";
 
 import metamask from "../assets/logos/metamaskwallet.svg";
 import trustwallet from "../assets/logos/trustwallet.svg";
-import logo from "../assets/logos/logo.svg";
+import logo from "../assets/logos/logo.png";
 import radio from "../assets/icons/radio.svg";
 import greenhash from "../assets/icons/greenhash.svg";
 import initialload from "../assets/icons/initialload.svg";
 import auditedcontract from "../assets/images/auditedcontract.svg";
-import background from "../assets/images/background.svg";
-import logoref from "../assets/images/logoref.svg";
 import copyref from "../assets/images/copyref.svg";
 
 //IMPORTING UTILITY PACKAGES
@@ -40,6 +38,7 @@ const Modal = ({
 }) => {
   const [isMetamask, setIsMetamask] = useState(false);
   const [isTrustWallet, setIsTrustWallet] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleWallet = (wallet) => {
     if (wallet === "metamask") {
@@ -55,14 +54,17 @@ const Modal = ({
   const { library, account, activate } = useWeb3React();
 
   const handleAcceptReferrer = async () => {
+    setIsLoading(true);
     console.log(referrerAddress);
     //if referer = '0x0000000000000000000000000000000000000000' proceed else cant add referer
     try {
       await new new Web3(library).eth.Contract(abi, address).methods
         .setReferrer(("ing", referrerAddress))
         .send({ from: account });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -118,10 +120,7 @@ const Modal = ({
 
   const renderAcceptReferrer = (
     <div className="backdrop">
-      <div
-        className="modal"
-        // style={{ background: `url(${background})`, backgroundSize: "cover" }}
-      >
+      <div className="modal">
         <div className="referrer_header">
           <div>
             <p className="text_accent_primary_14" style={{ fontSize: 16 }}>
@@ -129,8 +128,8 @@ const Modal = ({
             </p>
             <p className="text_accent_primary_12">{description}</p>
           </div>
+          <img src={logo} alt="logo" width={45} />
           <div className="block_right">
-            <img src={logoref} alt="logo" />
             <img src={auditedcontract} alt="audited" />
           </div>
         </div>
@@ -159,8 +158,13 @@ const Modal = ({
             <p>Dessert Finance Audit</p>
           </div>
         </div>
-        <button className="btn_primary" onClick={() => handleAcceptReferrer()}>
-          {buttonText}
+        <button
+          className="btn_primary"
+          style={{ pointerEvents: isLoading && "none" }}
+          disabled={isLoading}
+          onClick={() => handleAcceptReferrer()}
+        >
+          {isLoading ? "ACCEPTING NOW" : buttonText}
         </button>
       </div>
     </div>
