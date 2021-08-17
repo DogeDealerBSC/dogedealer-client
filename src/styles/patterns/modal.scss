@@ -101,17 +101,13 @@
   }
 
   .switch_referrer {
-    background: #ffe6c6;
+    background: #998aff;
     border-radius: 61.7647px;
-    padding: 4px 8px;
+    padding: 4px 12px;
     margin-right: 5px;
-
-    span {
-      background: #ffa725;
-      width: 19px;
-      height: 19px;
-      border-radius: 50%;
-    }
+    color: #fff !important;
+    white-space: nowrap;
+    font-size: 12px;
   }
 }
 
@@ -182,6 +178,24 @@
       font-size: 10.7059px;
       line-height: 16px;
       color: #000000;
+    }
+  }
+}
+
+.referrer_header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1em;
+  place-items: center;
+
+  .block_right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 1em;
+
+    img {
+      width: 45%;
     }
   }
 }

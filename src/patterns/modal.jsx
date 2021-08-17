@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Web3 from "web3";
 import { abi, address } from "../utils/constants";
+import { useWeb3React } from "@web3-react/core";
 
 //STYLESHEET
 
@@ -12,11 +13,16 @@ import "../styles/patterns/modal.scss";
 import metamask from "../assets/logos/metamaskwallet.svg";
 import trustwallet from "../assets/logos/trustwallet.svg";
 import logo from "../assets/logos/logo.svg";
-import copy from "../assets/icons/copy.svg";
 import radio from "../assets/icons/radio.svg";
 import greenhash from "../assets/icons/greenhash.svg";
 import initialload from "../assets/icons/initialload.svg";
-import { useWeb3React } from "@web3-react/core";
+import auditedcontract from "../assets/images/auditedcontract.svg";
+import background from "../assets/images/background.svg";
+import logoref from "../assets/images/logoref.svg";
+import copyref from "../assets/images/copyref.svg";
+
+//IMPORTING UTILITY PACKAGES
+
 import { injected, walletconnect } from "../utils/connector";
 
 const Modal = ({
@@ -49,26 +55,14 @@ const Modal = ({
   const { library, account, activate } = useWeb3React();
 
   const handleAcceptReferrer = async () => {
-    setIsProcessing(true);
     console.log(referrerAddress);
     //if referer = '0x0000000000000000000000000000000000000000' proceed else cant add referer
     try {
       await new new Web3(library).eth.Contract(abi, address).methods
-        .setReferer(("ing", referrerAddress))
+        .setReferrer(("ing", referrerAddress))
         .send({ from: account });
-      setReferrerAddress();
-      setIsProcessing(false);
-      setIsSuccess(true);
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 3000);
     } catch (error) {
       console.log(error);
-      setIsProcessing(false);
-      setIsError(true);
-      setTimeout(() => {
-        setIsError(false);
-      }, 3000);
     }
   };
 
@@ -124,8 +118,25 @@ const Modal = ({
 
   const renderAcceptReferrer = (
     <div className="backdrop">
-      <div className="modal">
-        {renderModalHeader}
+      <div
+        className="modal"
+        // style={{ background: `url(${background})`, backgroundSize: "cover" }}
+      >
+        <div className="referrer_header">
+          <div>
+            <p className="text_accent_primary_14" style={{ fontSize: 16 }}>
+              {title}
+            </p>
+            <p className="text_accent_primary_12">{description}</p>
+          </div>
+          <div className="block_right">
+            <img src={logoref} alt="logo" />
+            <img src={auditedcontract} alt="audited" />
+          </div>
+        </div>
+        <p className="text_accent_primary_14" style={{ margin: "1em 0" }}>
+          Your referrer is
+        </p>
         <div className="referrer_block">
           <div>
             <div className="ref_address">
@@ -137,7 +148,7 @@ const Modal = ({
             </div>
             <CopyToClipboard text={referrerAddress}>
               <img
-                src={copy}
+                src={copyref}
                 alt="copy"
                 width={24}
                 style={{ marginLeft: 16, cursor: "pointer" }}
@@ -145,8 +156,7 @@ const Modal = ({
             </CopyToClipboard>
           </div>
           <div className="switch_referrer">
-            <span></span>
-            <p className="text_accent_primary_14">Referrer</p>
+            <p>Dessert Finance Audit</p>
           </div>
         </div>
         <button className="btn_primary" onClick={() => handleAcceptReferrer()}>

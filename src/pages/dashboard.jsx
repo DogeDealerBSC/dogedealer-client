@@ -253,6 +253,7 @@ const Dashboard = () => {
     console.log(data);
     if (data === "0x0000000000000000000000000000000000000000") {
       setReferrerAddress(val);
+      console.log("entered");
     } else {
       setReferrerAddress();
     }
@@ -313,7 +314,7 @@ const Dashboard = () => {
       <Modal
         variant="acceptReferrer"
         title="Accept the referrer"
-        description="Accepting a referral will lower your taxes on every trade you make with $DogeDealer."
+        description="Accepting this referral and pay 5% LESS tax on your $DogeDealer purchase!"
         buttonText="ACCEPT NOW"
         referrerAddress={referrerAddress}
         setReferrerAddress={setReferrerAddress}
