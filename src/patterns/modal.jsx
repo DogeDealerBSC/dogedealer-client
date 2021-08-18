@@ -154,8 +154,8 @@ const Modal = ({
               />
             </CopyToClipboard>
           </div>
-          <div onClick={()=> {window.open('https://dessertswap.finance/audits/DogeDealer%20BEP-20%20Audit%2010098859.pdf')}} className="switch_referrer">
-            <p>Dessert Finance Audit</p>
+          <div  className="switch_referrer">
+            <p style={{cursor:'pointer'}} onClick={()=> {window.open('https://dessertswap.finance/audits/DogeDealer%20BEP-20%20Audit%2010098859.pdf')}} >Dessert Finance Audit</p>
           </div>
         </div>
         <button
@@ -189,7 +189,7 @@ const Modal = ({
     <div className="backdrop">
       <div className="modal">
         {renderModalHeader}
-        <div className="wrong_network_block">
+        {/* <div className="wrong_network_block">
           <p>
             <img src={radio} alt="radio" />
             <span>Ropsten Test Network</span>
@@ -210,7 +210,7 @@ const Modal = ({
             <img src={radio} alt="radio" />
             <span>Etherium Mainnet</span>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
