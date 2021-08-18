@@ -8,7 +8,8 @@ import down from "../assets/icons/down.svg";
 import UserModal from "./userModal";
 import { useWeb3React } from "@web3-react/core";
 
-const Referrals = ({ referralData }) => {
+const Referrals = ({ referralData, TotalReferrals }) => {
+  console.log(TotalReferrals);
   const [inviteLink, setInviteLink] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [dataLength, setDataLength] = useState(10);
@@ -19,9 +20,16 @@ const Referrals = ({ referralData }) => {
     <div className="total_links">
       <div className="total">
         <p className="text_accent_primary_14">Total referred</p>
-        <p className="text_accent_primary_22">{referralData?.length}</p>
+        <p className="text_accent_primary_22">{TotalReferrals}</p>
       </div>
-      <button className="inviteLink_btn" onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdS2NYtyd7FL-Qf7Ap1MGpONwLoPRSB-A1tvbT5NpLe-ZTDiw/viewform')}>
+      <button
+        className="inviteLink_btn"
+        onClick={() =>
+          window.open(
+            "https://docs.google.com/forms/d/e/1FAIpQLSdS2NYtyd7FL-Qf7Ap1MGpONwLoPRSB-A1tvbT5NpLe-ZTDiw/viewform"
+          )
+        }
+      >
         Apply for custom link
       </button>
     </div>

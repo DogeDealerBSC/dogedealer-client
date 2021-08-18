@@ -32,13 +32,11 @@ const Modal = ({
   chainId,
   referrerAddress,
   setReferrerAddress,
-  setIsProcessing,
-  setIsSuccess,
-  setIsError,
 }) => {
   const [isMetamask, setIsMetamask] = useState(false);
   const [isTrustWallet, setIsTrustWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState();
 
   const handleWallet = (wallet) => {
     if (wallet === "metamask") {
@@ -55,6 +53,7 @@ const Modal = ({
 
   const handleAcceptReferrer = async () => {
     setIsLoading(true);
+    setIsError();
     console.log(referrerAddress);
     //if referer = '0x0000000000000000000000000000000000000000' proceed else cant add referer
     try {
@@ -62,9 +61,14 @@ const Modal = ({
         .setReferrer(("ing", referrerAddress))
         .send({ from: account });
       setIsLoading(false);
+      setReferrerAddress();
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      setIsError("Something went wrong Try again");
+      setTimeout(() => {
+        setIsError();
+      }, 3000);
     }
   };
 
@@ -164,7 +168,7 @@ const Modal = ({
           disabled={isLoading}
           onClick={() => handleAcceptReferrer()}
         >
-          {isLoading ? "ACCEPTING NOW" : buttonText}
+          {isError ? isError : isLoading ? "ACCEPTING NOW" : buttonText}
         </button>
       </div>
     </div>

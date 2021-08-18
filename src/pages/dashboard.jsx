@@ -709,7 +709,10 @@ const Dashboard = () => {
         </div>
       ) : isReferrals ? (
         <div>
-          <Referrals referralData={referralData} />
+          <Referrals
+            referralData={referralData}
+            TotalReferrals={TotalReferrals}
+          />
         </div>
       ) : (
         <>
