@@ -154,7 +154,7 @@ const Modal = ({
               />
             </CopyToClipboard>
           </div>
-          <div className="switch_referrer">
+          <div onClick={()=> {window.open('https://dessertswap.finance/audits/DogeDealer%20BEP-20%20Audit%2010098859.pdf')}} className="switch_referrer">
             <p>Dessert Finance Audit</p>
           </div>
         </div>
