@@ -1527,7 +1527,7 @@ export const TokenList = [
     address: "0x0000000000000000000000000000000000000000",
     decimals: 18,
     logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
-  },
+  }
   {
     name: "Dogecoin",
     address: "0xba2ae424d960c26247dd6c32edc70b295c744c43",
