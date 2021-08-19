@@ -28,7 +28,9 @@ function LeaderboardData({ title, value }) {
       console.log(value.leader, "addres");
       const {
         data: { result },
-      } = await axios.get(`https://app.dogedealercoin.com/server/getReferrals/${value.leader}`);
+      } = await axios.get(
+        `https://app.dogedealercoin.com/server/getReferrals/${value.leader}`
+      );
       setData(result);
     } catch (error) {
       console.log(error);

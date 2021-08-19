@@ -3,7 +3,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Web3 from "web3";
 import { abi, address } from "../utils/constants";
 import { useWeb3React } from "@web3-react/core";
-
+import { useHistory } from "react-router-dom";
 //STYLESHEET
 
 import "../styles/patterns/modal.scss";
@@ -32,11 +32,13 @@ const Modal = ({
   chainId,
   referrerAddress,
   setReferrerAddress,
+  setIsSuccess,
 }) => {
   const [isMetamask, setIsMetamask] = useState(false);
   const [isTrustWallet, setIsTrustWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState();
+  const history = useHistory();
 
   const handleWallet = (wallet) => {
     if (wallet === "metamask") {
@@ -62,6 +64,11 @@ const Modal = ({
         .send({ from: account });
       setIsLoading(false);
       setReferrerAddress();
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        history.push("/");
+      }, 3000);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -158,8 +165,17 @@ const Modal = ({
               />
             </CopyToClipboard>
           </div>
-          <div  className="switch_referrer">
-            <p style={{cursor:'pointer'}} onClick={()=> {window.open('https://dessertswap.finance/audits/DogeDealer%20BEP-20%20Audit%2010098859.pdf')}} >Dessert Finance Audit</p>
+          <div className="switch_referrer">
+            <p
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.open(
+                  "https://dessertswap.finance/audits/DogeDealer%20BEP-20%20Audit%2010098859.pdf"
+                );
+              }}
+            >
+              Dessert Finance Audit
+            </p>
           </div>
         </div>
         <button

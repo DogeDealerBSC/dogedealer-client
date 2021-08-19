@@ -103,7 +103,6 @@ const Dashboard = () => {
   );
 
   const { active, library, account } = useWeb3React();
-  //const account = "0xA00c4A62474D053FF0394cdFdb3eE71Cb631f705";
 
   const web3 = new Web3(library);
   const contract = new web3.eth.Contract(abi, address);
@@ -175,7 +174,6 @@ const Dashboard = () => {
   };
 
   const accountInfo = async () => {
-    console.log("finished");
     const dividendEarned = await contract.methods
       .getAccountDividendsInfo(account)
       .call();
@@ -209,7 +207,8 @@ const Dashboard = () => {
         setTotalDividend(await getTotalDividendDistributed());
         setWithdrawable(await getWithdrawable());
         setReinvestingInfo(await getReinvestingInfo());
-        setTotalReferrals(await totalReferals());
+        var total = await totalReferals();
+        setTotalReferrals(total);
       } else {
         setPayoutToken("BNB");
         setPayoutTokenAddress("0x0000000000000000000000000000000000000000");
@@ -220,7 +219,7 @@ const Dashboard = () => {
       //setAutoDividendEarnings(await accountInfo(userTokenAddress));
     }
   }, [active, account, library, selectedToken]);
-
+  console.log(TotalReferrals);
   useEffect(() => {
     handleReferrals();
     handleLeaderboardData();
@@ -234,7 +233,6 @@ const Dashboard = () => {
       const {
         data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
       } = await axios.get("https://app.dogedealercoin.com/server/getAll");
-      // console.log(allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards);
       setAllTimeLeaderboard(allTimeRewards);
       setDailyLeaderboard(dailyRewards);
       setWeeklyLeaderboard(weeklyRewards);
@@ -484,11 +482,12 @@ const Dashboard = () => {
           animate="visible"
           exit="hidden"
         >
-          {TokenList.map((list) => {
+          {TokenList.map((list, index) => {
             return (
               <div
                 style={{ pointerEvents: rewardTokenName && "none" }}
                 onClick={() => handleReward(list.name, list.address)}
+                key={index}
               >
                 <p>
                   <img src={list.logo} alt="binance" width={24} />
@@ -772,7 +771,6 @@ const Dashboard = () => {
         setReferrerAddress={setReferrerAddress}
         setIsProcessing={setIsProcessing}
         setIsSuccess={setIsSuccess}
-        setIsError={setIsError}
       />
     );
   }
