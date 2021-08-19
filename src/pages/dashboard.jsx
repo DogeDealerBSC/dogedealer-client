@@ -230,9 +230,13 @@ const Dashboard = () => {
     try {
       // const { allTime, daily, weekly, monthly } = await test();
 
+      // const {
+      //   data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
+      // } = await axios.get("https://app.dogedealercoin.com/server/getAll");
+
       const {
         data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
-      } = await axios.get("https://app.dogedealercoin.com/server/getAll");
+      } = await axios.get("http://localhost:5000/getAll");
       setAllTimeLeaderboard(allTimeRewards);
       setDailyLeaderboard(dailyRewards);
       setWeeklyLeaderboard(weeklyRewards);
