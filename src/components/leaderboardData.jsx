@@ -25,16 +25,15 @@ function LeaderboardData({ title, value }) {
 
   const handleReferrer = async () => {
     try {
-      console.log(value.leader, "addres");
-      // const {
-      //   data: { result },
-      // } = await axios.get(
-      //   `https://app.dogedealercoin.com/server/getReferrals/${value.leader}`
-      // );
-
       const {
         data: { result },
-      } = await axios.get(`http://localhost:5000/getReferrals/${value.leader}`);
+      } = await axios.get(
+        `https://app.dogedealercoin.com/server/getReferrals/${value.leader}`
+      );
+
+      // const {
+      //   data: { result },
+      // } = await axios.get(`http://localhost:5000/getReferrals/${value.leader}`);
       setData(result);
     } catch (error) {
       console.log(error);
@@ -50,7 +49,10 @@ function LeaderboardData({ title, value }) {
       <div>
         <div>
           <p className="text_accent_primary_22">
-            <CountUp end={value.earn} separator="," decimals={2} />
+            {/* <CountUp end={value.earn} separator="," decimals={2} /> */}
+            {value.earn > 999
+              ? numFormatter(value.earn)
+              : value.earn?.toFixed(2)}
           </p>
           <p className="leaderDoge">
             <img src={dogeSmall} alt="doge" />

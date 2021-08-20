@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import _ from "lodash";
 //IMPORTING STYLESHEET
 
 import "../styles/patterns/leaderboard.scss";
@@ -24,6 +24,29 @@ const Leaderboard = ({
   const [selected, setSelected] = useState("All Time");
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
+  const allTimeLeaderboardSorted = _.orderBy(
+    allTimeLeaderboard,
+    ["earn"],
+    ["desc"]
+  );
+
+  const dailyLeaderboardSorted = _.orderBy(
+    dailyLeaderboard,
+    ["earn"],
+    ["desc"]
+  );
+
+  const weeklyLeaderboardSorted = _.orderBy(
+    weeklyLeaderboard,
+    ["earn"],
+    ["desc"]
+  );
+
+  const monthlyLeaderboardSorted = _.orderBy(
+    monthlyLeaderboard,
+    ["earn"],
+    ["desc"]
+  );
   const handleDropdown = (value) => {
     if (value === "daily") setSelected("daily");
     if (value === "weekly") setSelected("weekly");
@@ -46,7 +69,7 @@ const Leaderboard = ({
 
   const renderAlltimeLeaderboard = (
     <>
-      {allTimeLeaderboard.slice(0, 10).map((value, index) => {
+      {allTimeLeaderboardSorted.slice(0, 10).map((value, index) => {
         return (
           <LeaderboardData
             title={index + 1}
@@ -60,8 +83,8 @@ const Leaderboard = ({
 
   const renderDailyLeaderboard = (
     <>
-      {dailyLeaderboard.length > 0 ? (
-        dailyLeaderboard.slice(0, 10).map((value, index) => {
+      {dailyLeaderboardSorted.length > 0 ? (
+        dailyLeaderboardSorted.slice(0, 10).map((value, index) => {
           return (
             <LeaderboardData
               title={index + 1}
@@ -78,7 +101,7 @@ const Leaderboard = ({
 
   const renderWeeklyLeaderboard = (
     <>
-      {weeklyLeaderboard.slice(0, 10).map((value, index) => {
+      {weeklyLeaderboardSorted.slice(0, 10).map((value, index) => {
         return (
           <LeaderboardData
             title={index + 1}
@@ -92,7 +115,7 @@ const Leaderboard = ({
 
   const renderMonthlyLeaderboard = (
     <>
-      {monthlyLeaderboard.slice(0, 10).map((value, index) => {
+      {monthlyLeaderboardSorted.slice(0, 10).map((value, index) => {
         return (
           <LeaderboardData
             title={index + 1}

@@ -12,6 +12,7 @@
     "@web3-react/walletconnect-connector": "^6.2.4",
     "axios": "^0.21.1",
     "framer-motion": "^4.1.17",
+    "lodash": "^4.17.21",
     "node-sass": "^5.0.0",
     "query-string": "^7.0.1",
     "react": "^17.0.2",

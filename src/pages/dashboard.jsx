@@ -60,12 +60,8 @@ const Dashboard = () => {
 
   const [initialLoad, setInitialLoad] = useState(true);
   const [userProfile, setUserProfile] = useState(false);
-  const [isSelectToken, setIsSelectToken] = useState(false);
   const [rewardCoinModal, setRewardCoinModal] = useState(false);
   const [isAddressCopied, setIsAddressCopied] = useState(false);
-  const [busdCoin, setBusdCoin] = useState(false);
-  const [moonrise, setMoonrise] = useState(false);
-  const [isBinanceCoin, setBinanceCoin] = useState(true);
   const [inviteLink, setInviteLink] = useState(false);
   const [isLeaderBoard, setIsLeaderBoard] = useState(false);
   const [isReferrals, setIsReferrals] = useState(false);
@@ -103,17 +99,16 @@ const Dashboard = () => {
   );
 
   const { active, library, account } = useWeb3React();
-
   const web3 = new Web3(library);
   const contract = new web3.eth.Contract(abi, address);
   const bnb = {
     address: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
     decimal: 18,
   };
-  const totalReferals = async () => {
-    console.log("called");
+
+  const getReferalCount = async () => {
     var bal = await contract.methods.getReferralCount(account).call();
-    console.warn("balance", bal);
+    return bal;
   };
 
   const getUserToken = async () => {
@@ -130,9 +125,7 @@ const Dashboard = () => {
 
     if (userTokenAddress !== "0x0000000000000000000000000000000000000000") {
       Token = new web3.eth.Contract(abi, userTokenAddress);
-
       decimal = await Token.methods.decimals().call();
-
       name = await Token.methods.name().call();
 
       return {
@@ -177,12 +170,35 @@ const Dashboard = () => {
     const dividendEarned = await contract.methods
       .getAccountDividendsInfo(account)
       .call();
-    setPosition(Number(dividendEarned[1]));
+    setPosition(Number(dividendEarned[2]));
     setPaid(unatomic(dividendEarned[4], bnb.decimal));
     return unatomic(
       (dividendEarned[4] - dividendEarned[3]).toString(),
       bnb.decimal
     );
+  };
+
+  const handleGetInitialStatus = async () => {
+    setDogexBalance(await getDogexBalance());
+    setAutoDividendEarnings(await accountInfo());
+
+    const user = await getUserToken();
+
+    if (user !== undefined) {
+      console.log(user);
+      setPayoutToken(user.name);
+      setPayoutTokenAddress(user.userToken);
+      setDecimals(user.decimals);
+      setNativeDecimals(user.nativeDecimal);
+    } else {
+      setPayoutToken("BNB");
+      setPayoutTokenAddress("0x0000000000000000000000000000000000000000");
+    }
+    setReferalEarnings(await getReferalEarnings());
+    setTotalReferrals(await getReferalCount());
+    setWithdrawable(await getWithdrawable());
+    setReinvestingInfo(await getReinvestingInfo());
+    setTotalDividend(await getTotalDividendDistributed());
   };
 
   useEffect(async () => {
@@ -191,35 +207,14 @@ const Dashboard = () => {
       setInitialLoad(false);
     }, 2000);
     if (active) {
-      const bal = await getDogexBalance();
-      setDogexBalance(bal);
-      const data = await accountInfo();
-      setAutoDividendEarnings(data);
-
-      const user = await getUserToken();
-      if (user !== undefined) {
-        console.log(user);
-        setPayoutToken(user.name);
-        setPayoutTokenAddress(user.userToken);
-        setDecimals(user.decimals);
-        setNativeDecimals(user.nativeDecimal);
-        setReferalEarnings(await getReferalEarnings());
-        setTotalDividend(await getTotalDividendDistributed());
-        setWithdrawable(await getWithdrawable());
-        setReinvestingInfo(await getReinvestingInfo());
-        var total = await totalReferals();
-        setTotalReferrals(total);
-      } else {
-        setPayoutToken("BNB");
-        setPayoutTokenAddress("0x0000000000000000000000000000000000000000");
-      }
+      handleGetInitialStatus();
       //await accountInfo();
       const { referrer } = queryString.parse(location.search);
       handleIsvalidAcceptReferrerr(referrer);
       //setAutoDividendEarnings(await accountInfo(userTokenAddress));
     }
   }, [active, account, library, selectedToken]);
-  console.log(TotalReferrals);
+
   useEffect(() => {
     handleReferrals();
     handleLeaderboardData();
@@ -228,15 +223,13 @@ const Dashboard = () => {
   const handleLeaderboardData = async () => {
     setIsLoading(true);
     try {
-      // const { allTime, daily, weekly, monthly } = await test();
+      const {
+        data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
+      } = await axios.get("https://app.dogedealercoin.com/server/getAll");
 
       // const {
       //   data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
-      // } = await axios.get("https://app.dogedealercoin.com/server/getAll");
-
-      const {
-        data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
-      } = await axios.get("http://localhost:5000/getAll");
+      // } = await axios.get("http://localhost:5000/getAll");
       setAllTimeLeaderboard(allTimeRewards);
       setDailyLeaderboard(dailyRewards);
       setWeeklyLeaderboard(weeklyRewards);
@@ -276,6 +269,7 @@ const Dashboard = () => {
       await contract.methods.setReinvest(value).send({ from: account });
       setIsProcessing(false);
       setIsSuccess(true);
+      handleGetInitialStatus();
       setTimeout(() => {
         setIsSuccess(false);
       }, 3000);
@@ -291,8 +285,10 @@ const Dashboard = () => {
   };
 
   const handleImage = (tokenAddress) => {
-    console.log(tokenAddress);
-    const res = TokenList.filter((list) => list.address === tokenAddress);
+    const res = TokenList.filter(
+      (list) =>
+        list.address?.toLocaleLowerCase() === tokenAddress?.toLocaleLowerCase()
+    );
     return res[0]?.logo;
   };
 
@@ -328,12 +324,7 @@ const Dashboard = () => {
             4
           )}...${account?.slice(account?.length - 4)}`}</p>
           <span className="text_accent_primary_14">
-            <CountUp
-              start={0}
-              end={dogexBalance}
-              decimals={dogexBalance > 0 ? 4 : 0}
-              duration={2}
-            />{" "}
+            <CountUp start={0} end={dogexBalance} duration={2} />{" "}
           </span>
         </div>
         <img src={user} alt="user" width={24} />
@@ -366,7 +357,7 @@ const Dashboard = () => {
         <p className="text_regular_14_w600">Referral Earnings</p>
         <div className="flex">
           <span className="text_orange_22">
-            {numFormatter(referalEarnings, 4)}
+            {numFormatter(referalEarnings)}
           </span>
           {renderDogeX}
         </div>
@@ -460,8 +451,11 @@ const Dashboard = () => {
       setRewardTokenName();
       setIsProcessing(false);
       setIsSuccess(true);
+      handleGetInitialStatus();
       setTimeout(() => {
         setIsSuccess(false);
+        setPayoutTokenAddress(tokenAddress);
+        setPayoutToken(tokenName);
       }, 3000);
     } catch (error) {
       console.log(error);
@@ -586,8 +580,7 @@ const Dashboard = () => {
           className="text_accent_primary_14"
           style={{ fontSize: 22, marginBottom: 10 }}
         >
-          <CountUp end={dogexBalance} decimals={dogexBalance > 0 ? 2 : 0} />{" "}
-          Coins
+          <CountUp end={dogexBalance} /> Coins
         </p>
         <p className="text_greendark_14_normal">Metamask ID</p>
         <div>
@@ -654,7 +647,7 @@ const Dashboard = () => {
       <iframe
         src={"https://pancakeswap.finance/swap?outputCurrency=" + address}
         frameBorder="0"
-        width="400"
+        width="inherit"
         height="450"
       ></iframe>
     </div>
