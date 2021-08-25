@@ -12,7 +12,7 @@ import LeaderboardData from "../components/leaderboardData";
 
 import chevrondown from "../assets/icons/chevrondown.svg";
 import loader from "../assets/icons/loader.gif";
-// import down from "../assets/icons/down.svg";
+import down from "../assets/icons/down.svg";
 
 const Leaderboard = ({
   allTimeLeaderboard,
@@ -23,7 +23,11 @@ const Leaderboard = ({
 }) => {
   const [selected, setSelected] = useState("All Time");
   const [isDropdownActive, setIsDropdownActive] = useState(false);
+  const [dataLength, setDataLength] = useState(10);
 
+  useEffect(() => {
+    setDataLength(10);
+  }, [selected]);
   const allTimeLeaderboardSorted = _.orderBy(
     allTimeLeaderboard,
     ["earn"],
@@ -68,8 +72,8 @@ const Leaderboard = ({
   );
 
   const renderAlltimeLeaderboard = (
-    <>
-      {allTimeLeaderboardSorted.slice(0, 10).map((value, index) => {
+    <div>
+      {allTimeLeaderboardSorted.slice(0, dataLength).map((value, index) => {
         return (
           <LeaderboardData
             title={index + 1}
@@ -78,13 +82,22 @@ const Leaderboard = ({
           />
         );
       })}
-    </>
+      {allTimeLeaderboardSorted?.length > 10 && (
+        <div
+          className="referralFoot"
+          onClick={() => setDataLength(dataLength + 10)}
+        >
+          <span className="text_accent_primary_12">view more</span>
+          <img src={down} alt="down" />
+        </div>
+      )}
+    </div>
   );
 
   const renderDailyLeaderboard = (
     <>
       {dailyLeaderboardSorted.length > 0 ? (
-        dailyLeaderboardSorted.slice(0, 10).map((value, index) => {
+        dailyLeaderboardSorted.slice(0, dataLength).map((value, index) => {
           return (
             <LeaderboardData
               title={index + 1}
@@ -94,37 +107,72 @@ const Leaderboard = ({
           );
         })
       ) : (
-        <div className="flex_center">No rewards yet</div>
+        <div className="flex_center">No transactions yet</div>
+      )}
+      {dailyLeaderboardSorted?.length > 10 && (
+        <div
+          className="referralFoot"
+          onClick={() => setDataLength(dataLength + 10)}
+        >
+          <span className="text_accent_primary_12">view more</span>
+          <img src={down} alt="down" />
+        </div>
       )}
     </>
   );
 
   const renderWeeklyLeaderboard = (
     <>
-      {weeklyLeaderboardSorted.slice(0, 10).map((value, index) => {
-        return (
-          <LeaderboardData
-            title={index + 1}
-            value={value}
-            key={index.toString()}
-          />
-        );
-      })}
+      {weeklyLeaderboardSorted.length > 0 ? (
+        weeklyLeaderboardSorted.slice(0, dataLength).map((value, index) => {
+          return (
+            <LeaderboardData
+              title={index + 1}
+              value={value}
+              key={index.toString()}
+            />
+          );
+        })
+      ) : (
+        <div className="flex_center">No transactions yet</div>
+      )}
+      {weeklyLeaderboardSorted?.length > 10 && (
+        <div
+          className="referralFoot"
+          onClick={() => setDataLength(dataLength + 10)}
+        >
+          <span className="text_accent_primary_12">view more</span>
+          <img src={down} alt="down" />
+        </div>
+      )}
     </>
   );
 
   const renderMonthlyLeaderboard = (
-    <>
-      {monthlyLeaderboardSorted.slice(0, 10).map((value, index) => {
-        return (
-          <LeaderboardData
-            title={index + 1}
-            value={value}
-            key={index.toString()}
-          />
-        );
-      })}
-    </>
+    <div>
+      {monthlyLeaderboardSorted.length > 0 ? (
+        monthlyLeaderboardSorted.slice(0, dataLength).map((value, index) => {
+          return (
+            <LeaderboardData
+              title={index + 1}
+              value={value}
+              key={index.toString()}
+            />
+          );
+        })
+      ) : (
+        <div className="flex_center">No transactions yet</div>
+      )}
+      {monthlyLeaderboardSorted?.length > 10 && (
+        <div
+          className="referralFoot"
+          onClick={() => setDataLength(dataLength + 10)}
+        >
+          <span className="text_accent_primary_12">view more</span>
+          <img src={down} alt="down" />
+        </div>
+      )}
+    </div>
   );
   return (
     <div>
@@ -162,15 +210,6 @@ const Leaderboard = ({
             }
           </div>
         )}
-        {/* {allTimeLeaderboard?.length > 10 && (
-          <div
-            className="referralFoot"
-            onClick={() => setDataLength(dataLength + 10)}
-          >
-            <span className="text_accent_primary_12">view more</span>
-            <img src={down} alt="down" />
-          </div>
-        )} */}
       </div>
     </div>
   );

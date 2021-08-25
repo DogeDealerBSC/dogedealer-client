@@ -225,7 +225,7 @@ const Dashboard = () => {
     try {
       const {
         data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },
-      } = await axios.get("https://app.dogedealercoin.com/server/getAll");
+      } = await axios.get("https://api.dogedealercoin.com/server_app/getAll");
 
       // const {
       //   data: { allTimeRewards, monthlyRewards, weeklyRewards, dailyRewards },

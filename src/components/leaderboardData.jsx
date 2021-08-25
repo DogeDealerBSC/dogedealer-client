@@ -14,6 +14,7 @@ import HashLinks from "./hashLinks";
 //IMPORTING MEDIA ASSETS
 
 import dogeSmall from "../assets/icons/dogeSmall.svg";
+import logo from "../assets/logos/logo.png";
 import axios from "axios";
 
 function LeaderboardData({ title, value }) {
@@ -28,7 +29,7 @@ function LeaderboardData({ title, value }) {
       const {
         data: { result },
       } = await axios.get(
-        `https://app.dogedealercoin.com/server/getReferrals/${value.leader}`
+        `https://api.dogedealercoin.com/server_app/getReferrals/${value.leader}`
       );
 
       // const {
@@ -49,14 +50,12 @@ function LeaderboardData({ title, value }) {
       <div>
         <div>
           <p className="text_accent_primary_22">
-            {/* <CountUp end={value.earn} separator="," decimals={2} /> */}
             {value.earn > 999
               ? numFormatter(value.earn)
-              : value.earn?.toFixed(2)}
+              : parseFloat(value.earn)?.toFixed(2)}
           </p>
           <p className="leaderDoge">
-            <img src={dogeSmall} alt="doge" />
-            <span className="text_accent_primary_687">DOGE</span>
+            <img src={logo} alt="doge" width={20} />
           </p>
           <p className="text_accent_primary_14R">EARNED</p>
         </div>
